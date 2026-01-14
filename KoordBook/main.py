@@ -3,7 +3,7 @@ import logging
 import gspread
 import json
 from telegram import Update, ReplyKeyboardRemove, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes, ConversationHandler, CallbackQueryHandler
+from telegram.ext import Updater, CommandHandler, MessageHandler, filters, ContextTypes, ConversationHandler, CallbackQueryHandler, CallbackContext
 from telegram.error import TelegramError
 from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
@@ -179,7 +179,7 @@ class GoogleSheetsManager:
 
 
 # Bot functions
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+async def start(update: Update, context: CallbackContext) -> int:
     """Start the conversation"""
     context.user_data.clear()
     user = update.message.from_user
@@ -196,7 +196,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     return NAME
 
 
-async def get_name(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+async def get_name(update: Update, context: CallbackContext) -> int:
     """Get user's name"""
     context.user_data['Имя'] = update.message.text
 
@@ -207,7 +207,7 @@ async def get_name(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     return LASTNAME
 
 
-async def get_lastname(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+async def get_lastname(update: Update, context: CallbackContext) -> int:
     """Get user's lastname"""
     context.user_data['Фамилия'] = update.message.text
 
@@ -218,7 +218,7 @@ async def get_lastname(update: Update, context: ContextTypes.DEFAULT_TYPE) -> in
     return GROUP
 
 
-async def get_group(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+async def get_group(update: Update, context: CallbackContext) -> int:
     """Get user's group"""
     context.user_data['Группа'] = update.message.text
 
@@ -240,7 +240,7 @@ async def get_group(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     return FACULTY
 
 
-async def get_faculty(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+async def get_faculty(update: Update, context: CallbackContext) -> int:
     """Get user's faculty"""
     query = update.callback_query
     await query.answer()
@@ -264,7 +264,7 @@ async def get_faculty(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int
 
     return MEETING
 
-async def get_meeting(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+async def get_meeting(update: Update, context: CallbackContext) -> int:
     """Get user's meeting"""
     query = update.callback_query
     await query.answer()
@@ -278,7 +278,7 @@ async def get_meeting(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int
 
     return DATE
 
-async def get_date(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+async def get_date(update: Update, context: CallbackContext) -> int:
     """Get user's meeting"""
     context.user_data['Дата проведения встречи'] = update.message.text
 
@@ -288,7 +288,7 @@ async def get_date(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 
     return GROUP_MEMBERS
 
-async def get_amount(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+async def get_amount(update: Update, context: CallbackContext) -> int:
     """Get user's pluses"""
     context.user_data['Сколько первокурсников в группе?'] = update.message.text
 
@@ -298,7 +298,7 @@ async def get_amount(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 
     return WERE
 
-async def get_were(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+async def get_were(update: Update, context: CallbackContext) -> int:
     """Get user's pluses"""
     context.user_data['Сколько пришло?'] = update.message.text
 
@@ -310,7 +310,7 @@ async def get_were(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 
     return WHY_NOT
 
-async def get_why_not(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+async def get_why_not(update: Update, context: CallbackContext) -> int:
     """Get user's pluses"""
     context.user_data['Причины отсутствия'] = update.message.text
 
@@ -359,7 +359,7 @@ async def get_why_not(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int
         return TOTALITY
 
 
-async def pull_1(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+async def pull_1(update: Update, context: CallbackContext) -> int:
     """Get user's pluses"""
     variant = context.user_data.get('Вид встречи')
 
@@ -417,7 +417,7 @@ async def pull_1(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         return PLUSES
 
 
-async def pull_2(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+async def pull_2(update: Update, context: CallbackContext) -> int:
     """Get user's pluses"""
     variant = context.user_data.get('Вид встречи')
 
@@ -459,7 +459,7 @@ async def pull_2(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     else:
         pass
 
-async def pull_3(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+async def pull_3(update: Update, context: CallbackContext) -> int:
     """Get user's pluses"""
     variant = context.user_data.get('Вид встречи')
 
@@ -480,7 +480,7 @@ async def pull_3(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     else:
         pass
 
-async def get_pluses(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+async def get_pluses(update: Update, context: CallbackContext) -> int:
     """Get user's pluses"""
     context.user_data['Плюсы встречи'] = update.message.text
 
@@ -490,7 +490,7 @@ async def get_pluses(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 
     return MINUSES
 
-async def get_minuses(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+async def get_minuses(update: Update, context: CallbackContext) -> int:
     """Get user's minuses"""
     context.user_data['Минусы встречи'] = update.message.text
 
@@ -500,7 +500,7 @@ async def get_minuses(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int
 
     return TOTAL
 
-async def get_total(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+async def get_total(update: Update, context: CallbackContext) -> int:
     """Get user's total"""
     context.user_data['Общие впечатления'] = update.message.text
 
@@ -512,7 +512,7 @@ async def get_total(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     return COMMENTS
 
 
-async def get_comments(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+async def get_comments(update: Update, context: CallbackContext) -> int:
     """Get user's comments and save to Google Sheets"""
     context.user_data['Доп. инфа'] = update.message.text
 
@@ -572,7 +572,7 @@ async def get_comments(update: Update, context: ContextTypes.DEFAULT_TYPE) -> in
 #             pass
     
     
-async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def handle_photo(update: Update, context: CallbackContext):
     
     context.user_data['Фото'] = "Смотри чат в тг"
     # Получаем файл
@@ -611,7 +611,7 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
    
-async def again(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+async def again(update: Update, context: CallbackContext) -> int:
     
     await update.message.reply_text(
         'Прошла новая встреча с первашами?\n\nНажимай /start и мы всё запишем!',
@@ -621,7 +621,7 @@ async def again(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     return ConversationHandler.END
         
         
-async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+async def cancel(update: Update, context: CallbackContext) -> int:
     """Cancel the conversation"""
     await update.message.reply_text(
         'Начнём заново!\n\nНажимай /again и мы начнём заново!',
@@ -630,7 +630,7 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 
     return ConversationHandler.END
 
-async def id(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+async def id(update: Update, context: CallbackContext) -> int:
 
     chat_id = update.effective_chat.id
     await update.message.reply_text(f"Айди этого чата => {chat_id}",
@@ -638,7 +638,7 @@ async def id(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 
 
 
-async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def help_command(update: Update, CallbackContext):
     """Send a help message"""
     await update.message.reply_text(
         "Я твой личный дневник. Вот что я умею:\n\n/start - Нажимай и мы запишем твою встречу с первашами\n"
@@ -647,7 +647,7 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-async def error_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def error_handler(update: Update, context: CallbackContext):
     """Handle errors"""
     logger.error(f"Update {update} caused error {context.error}")
 
@@ -677,8 +677,12 @@ def main():
 
     # Create Application
     try:
-        application = Application.builder().token(TELEGRAM_TOKEN).build()
-        application.bot_data['sheets_manager'] = sheets_manager
+        updater = Updater(TELEGRAM_TOKEN, use_context=True)
+        dispatcher = updater.dispatcher
+
+        dispatcher.bot_data['sheets_manager'] = sheets_manager
+        #application = Application.builder().token(TELEGRAM_TOKEN).build()
+        #application.bot_data['sheets_manager'] = sheets_manager
     except Exception as e:
         logger.error(f"❌ Ошибка создания приложения: {e}")
         print(f"❌ Ошибка Telegram: {e}")
@@ -743,6 +747,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
