@@ -519,7 +519,19 @@ async def get_comments(update: Update, context: ContextTypes.DEFAULT_TYPE) -> in
     # Get sheets manager from context
     
     #sheets_manager = context.application.sheets_manager
-    sheets_manager = context.bot_data['sheets_manager']
+    #sheets_manager = context.bot_data['sheets_manager']
+    try:
+        sheets_manager = GoogleSheetsManager(
+            credentials_file="/etc/secrets/credentials.json",  # или укажите путь прямо здесь
+            spreadsheet_name="Данные дневника Координаторов'25"
+        )
+    except Exception as e:
+        logger.error(f"Failed to initialize Google Sheets: {e}")
+        await update.message.reply_text(
+            "Ошибка подключения к Google Sheets. Пожалуйста, попробуйте позже."
+        )
+        return ConversationHandler.END
+
     
     # Save to Google Sheets
     success = await sheets_manager.add_data(context.user_data)
@@ -667,7 +679,6 @@ def main():
     try:
         application = Application.builder().token(TELEGRAM_TOKEN).build()
         application.bot_data['sheets_manager'] = sheets_manager
-        #application.sheets_manager = sheets_manager
     except Exception as e:
         logger.error(f"❌ Ошибка создания приложения: {e}")
         print(f"❌ Ошибка Telegram: {e}")
@@ -732,6 +743,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
