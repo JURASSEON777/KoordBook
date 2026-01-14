@@ -4,7 +4,7 @@ import gspread
 import json
 from telegram import Update, ReplyKeyboardRemove, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes, ConversationHandler, CallbackQueryHandler
-from telegram.error import TelegramError, BadRequest
+from telegram.error import TelegramError
 from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
@@ -517,8 +517,10 @@ async def get_comments(update: Update, context: ContextTypes.DEFAULT_TYPE) -> in
     context.user_data['Доп. инфа'] = update.message.text
 
     # Get sheets manager from context
-    sheets_manager = context.application.sheets_manager
-
+    
+    #sheets_manager = context.application.sheets_manager
+    sheets_manager = context.bot_data['sheets_manager']
+    
     # Save to Google Sheets
     success = await sheets_manager.add_data(context.user_data)
 
@@ -664,7 +666,8 @@ def main():
     # Create Application
     try:
         application = Application.builder().token(TELEGRAM_TOKEN).build()
-        application.sheets_manager = sheets_manager
+        application.bot_data['sheets_manager'] = sheets_manager
+        #application.sheets_manager = sheets_manager
     except Exception as e:
         logger.error(f"❌ Ошибка создания приложения: {e}")
         print(f"❌ Ошибка Telegram: {e}")
@@ -729,6 +732,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
