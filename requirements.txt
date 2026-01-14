@@ -1,4 +1,4 @@
-python-telegram-bot==20.6
+python-telegram-bot==20.7
 gspread==5.12.4
 google-api-python-client==2.108.0
 google-auth-httplib2==0.1.1
