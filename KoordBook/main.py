@@ -582,7 +582,7 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await context.bot.send_photo(
                 chat_id=-1003088757586,
                 photo=photo.file_id,
-                caption=f"Координатор факультета {context.user_data.get('Факультет', '')} и группы {context.user_data.get('Группа', '')}"  
+                caption=f"Координатор факультета {context.user_data.get('Факультет', '')} и группы {context.user_data.get('Группа', '')} "  
                    f"{context.user_data.get('Имя', '')} {context.user_data.get('Фамилия', '')} (@{context.user_data.get('username', '')}) заполнил дневник о встрече '{context.user_data.get('Вид встречи', '')}'\n"
                    f"Дата проведения - {context.user_data.get('Дата проведения встречи', '')}"
             )
@@ -776,6 +776,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
