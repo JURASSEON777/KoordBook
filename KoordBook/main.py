@@ -107,15 +107,16 @@ class GoogleSheetsManager:
         """Create a template credentials.json file with instructions"""
         template = {
             "type": "service_account",
-            "project_id": "your-project-id",
-            "private_key_id": "your-private-key-id",
-            "private_key": "-----BEGIN PRIVATE KEY-----\nyour-private-key-here\n-----END PRIVATE KEY-----\n",
-            "client_email": "your-service-account@your-project.iam.gserviceaccount.com",
-            "client_id": "your-client-id",
+            "project_id": "koordbook",
+            "private_key_id": "62b0955e8b768bff5a7f298def701e5f11994a57",
+            "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC+ID+C6YHt8ABE\n-----END PRIVATE KEY-----\n",
+            "client_email": "telegram-bot-sheets@koordbook.iam.gserviceaccount.com",
+            "client_id": "103772447748404966704",
             "auth_uri": "https://accounts.google.com/o/oauth2/auth",
             "token_uri": "https://oauth2.googleapis.com/token",
             "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-            "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/your-service-account%40your-project.iam.gserviceaccount.com"
+            "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/telegram-bot-sheets%40koordbook.iam.gserviceaccount.com"
+            "universe_domain": "googleapis.com"
         }
 
         with open(self.credentials_file, 'w') as f:
@@ -729,3 +730,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
