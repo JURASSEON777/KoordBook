@@ -664,27 +664,59 @@ def main():
 
     # Create Application
     try:
-        application = Application.builder().token(TELEGRAM_TOKEN).build()
-        print(f"Application created successfully: {application}")
-        application.bot_data['sheets_manager'] = sheets_manager
-        print("Sheets manager added to bot_data")
-    except TelegramError as e:
-        logger.error(f"Telegram API error: {e}")
-        print(f"❌ Telegram API error: {e}")
-        return
-    except Exception as e:
-        logger.error(f"Unexpected error creating application: {e}", exc_info=True)
-        print(f"❌ Unexpected error: {e}")
-        import traceback
-        traceback.print_exc()
-        return
+        print("🔄 Creating Telegram Application...")
         
-        #application.sheets_manager = sheets_manager
+        # Способ 1: Попробуем напрямую
+        from telegram import Bot
+        from telegram.ext import Application
+        
+        # Создаем Application вручную
+        bot = Bot(token=TELEGRAM_TOKEN)
+        application = Application.builder().bot(bot).build()
+        
+        # Альтернативный способ, если выше не работает:
+        # application = Application.builder().token(TELEGRAM_TOKEN).concurrent_updates(True).build()
+        
+        # Сохраняем sheets_manager
+        application.bot_data['sheets_manager'] = sheets_manager
+        print("✅ Application created successfully")
+        
     except Exception as e:
         logger.error(f"❌ Ошибка создания приложения: {e}")
-        print(f"❌ Ошибка Telegram: {e}")
-        return
-
+        print(f"❌ Подробности ошибки:")
+        import traceback
+        traceback.print_exc()
+        
+    #try:
+     #   application = Application.builder().token(TELEGRAM_TOKEN).build()
+      #  print(f"Application created successfully: {application}")
+       # application.bot_data['sheets_manager'] = sheets_manager
+        #print("Sheets manager added to bot_data")
+    #except TelegramError as e:
+     #   logger.error(f"Telegram API error: {e}")
+      #  print(f"❌ Telegram API error: {e}")
+       # return
+    #except Exception as e:
+     #   logger.error(f"Unexpected error creating application: {e}", exc_info=True)
+      #  print(f"❌ Unexpected error: {e}")
+       # import traceback
+        #traceback.print_exc()
+        #return
+    
+        print("🔄 Пробуем создать Updater...")
+        try:
+            from telegram.ext import Updater
+                
+            updater = Updater(token=TELEGRAM_TOKEN, use_context=True)
+            application = updater.dispatcher.application
+            application.bot_data['sheets_manager'] = sheets_manager
+            print("✅ Updater создан успешно")
+        except Exception as e2:
+            logger.error(f"❌ Ошибка создания Updater: {e2}")
+            print(f"❌ Финальная ошибка:")
+            traceback.print_exc()
+            return
+    
     # Setup conversation handler
     conv_handler = ConversationHandler(
         entry_points=[CommandHandler('start', start)],
@@ -744,6 +776,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
